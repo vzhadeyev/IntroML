@@ -18,7 +18,7 @@ def load_reviews_data(reviews_data_path):
     numeric_fields = {'sentiment', 'helpfulY', 'helpfulN'}
 
     data = []
-    with open(reviews_data_path) as data_file:
+    with open(reviews_data_path, encoding='utf8') as data_file:
         for datum in csv.DictReader(data_file, delimiter='\t'):
             data.append({field: int(value) if field in numeric_fields else value for field, value in datum.items()})
 
@@ -39,6 +39,10 @@ def load_toy_data(toy_data_path):
     data = np.vstack((xs, ys)).T
 
     return data, labels
+
+def load_stopwords_data(stopwords_data_path):
+    with open(stopwords_data_path, encoding='utf8') as f:
+        return [l.strip() for l in f.readlines()]
 
 def plot_toy_results(features, labels, theta, theta_0=0):
     """Plots the toy data in 2D along with the decision boundary.

@@ -23,8 +23,10 @@ def perceptron_single_step_update(feature_vector, label, current_theta, current_
         real valued number with the value of theta_0 after the current updated has
         completed.
     """
+    current_theta += label * feature_vector
+    current_theta_0 += float(label)
+    return current_theta, current_theta_0
 
-    raise NotImplementedError
 
 def perceptron(feature_matrix, labels, T=5):
     """Runs the average perceptron algorithm on a given set of data.
@@ -42,8 +44,24 @@ def perceptron(feature_matrix, labels, T=5):
         the average theta and the second element is a real number with the
         value of the average theta_0.
     """
+    n_features = feature_matrix.shape[1]
+    theta = np.zeros(n_features)
+    theta_0 = 0.0
+    theta_final = np.zeros(n_features)
+    theta_0_final = 0.0
 
-    raise NotImplementedError
+    divider = len(feature_matrix) * T
+
+    for t in range(T):
+        for x, y in zip(feature_matrix, labels):
+            if y*(np.dot(theta, x) + theta_0) <= 0:
+                theta, theta_0 = \
+                    perceptron_single_step_update(feature_vector=x, label=y, current_theta=theta, current_theta_0=theta_0)
+            theta_final += theta / divider
+            theta_0_final += theta_0 / divider
+
+    return theta_final, theta_0_final
+
 
 ### Part 2 - Classifying Reviews
 
@@ -61,8 +79,8 @@ def classify(feature_matrix, theta, theta_0=0):
         classification of the kth row of the feature matrix using the given theta
         and theta_0.
     """
+    return np.sign(np.dot(feature_matrix, theta) + theta_0)
 
-    raise NotImplementedError
 
 def accuracy(feature_matrix, labels, theta, theta_0=0):
     """Determines the accuracy of a linear classifier.
@@ -78,8 +96,9 @@ def accuracy(feature_matrix, labels, theta, theta_0=0):
     Returns:
         The accuracy of the model on the provided data.
     """
+    pred = classify(feature_matrix, theta, theta_0)
+    return np.sum([pred == labels])/len(labels)
 
-    raise NotImplementedError
 
 ### Part 3 - Improving the Model
 
@@ -104,10 +123,18 @@ def tune(Ts, train_feature_matrix, train_labels, val_feature_matrix, val_labels)
         parameter value and the second element is an ndarray of validation accuracies
         for each parameter value.
     """
+    train_accs = []
+    val_accs = []
 
-    raise NotImplementedError
+    for T in Ts:
+        theta, theta_0 = perceptron(train_feature_matrix, train_labels, T=T)
+        train_accs.append(accuracy(train_feature_matrix, train_labels, theta, theta_0))
+        val_accs.append(accuracy(val_feature_matrix, val_labels, theta, theta_0))
 
-def extract_words(input_string):
+    return train_accs, val_accs
+
+
+def extract_words(input_string, stopwords=None):
     """Returns a list of lowercase words in the string.
 
     Also separates punctuation and digits with spaces.
@@ -122,9 +149,14 @@ def extract_words(input_string):
     for c in punctuation + digits:
         input_string = input_string.replace(c, ' ' + c + ' ')
 
+    if stopwords != None:
+        for w in stopwords:
+            input_string = input_string.replace(w, '')
+
     return input_string.lower().split()
 
-def bag_of_words(reviews):
+
+def bag_of_words(reviews, stopwords=None):
     """Creates a bag-of-words representation of text.
 
     Arguments:
@@ -136,15 +168,17 @@ def bag_of_words(reviews):
     """
 
     dictionary = {}
-
+    #max = 0
     for text in reviews:
-        word_list = extract_words(text)
-
+        word_list = extract_words(text, stopwords)
+        #max = len(word_list) if max < len(word_list) else max
         for word in word_list:
             if word not in dictionary:
                 dictionary[word] = len(dictionary)
 
+    #print(max)
     return dictionary
+
 
 def extract_bow_feature_vectors(reviews, dictionary):
     """Extracts bag-of-words features from text as a feature matrix.
@@ -174,7 +208,8 @@ def extract_bow_feature_vectors(reviews, dictionary):
 
     return feature_matrix
 
-def extract_final_features(reviews, dictionary):
+
+def extract_final_features(reviews, dictionary, stopwords):
     """Extracts features from the reviews.
 
     YOU MAY MODIFY THE PARAMETERS OF THIS FUNCTION.
@@ -188,5 +223,13 @@ def extract_final_features(reviews, dictionary):
         An ndarray of shape (n,m) where n is the number of reviews
         and m is the number of total features.
     """
+    feature_matrix = np.zeros([len(reviews), len(dictionary) + 1])
 
-    return extract_bow_feature_vectors(reviews, dictionary)
+    for i, text in enumerate(reviews):
+        word_list = extract_words(text, None)
+
+        for word in word_list:
+            if word in dictionary:
+                feature_matrix[i, dictionary[word]] += 1
+        feature_matrix[i, -1] = len(word_list)/1271.0
+    return feature_matrix
