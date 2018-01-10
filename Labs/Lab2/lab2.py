@@ -156,6 +156,35 @@ def extract_words(input_string, stopwords=None):
     return input_string.lower().split()
 
 
+def extract_words_with_bigrams(input_string, stopwords=None):
+    """Returns a list of lowercase words in the string.
+
+        Also separates punctuation and digits with spaces.
+
+        Arguments:
+            input_string(str): A string.
+
+        Returns:
+            A list of words with punctuation and digits separated.
+        """
+
+    for c in punctuation + digits:
+        input_string = input_string.replace(c, ' ' + c + ' ')
+
+    if stopwords != None:
+        for w in stopwords:
+            input_string = input_string.replace(w, '')
+
+    words = input_string.lower().split()
+
+    for i in range(1, len(words)):
+        bigram = '%s%s' % (words[i-1], words[i])
+        if bigram not in words:
+            words.append(bigram)
+
+    return words
+
+
 def bag_of_words(reviews, stopwords=None):
     """Creates a bag-of-words representation of text.
 
@@ -179,6 +208,47 @@ def bag_of_words(reviews, stopwords=None):
     #print(max)
     return dictionary
 
+
+def bag_of_words_final(reviews, stopwords=None):
+    dictionary = {}
+    dictionary_hist = {}
+    #max = 0
+    for text in reviews:
+        word_list = extract_words(text, stopwords)
+        #max = len(word_list) if max < len(word_list) else max
+        for word in word_list:
+            if word not in dictionary_hist:
+                dictionary_hist[word] = 1
+            else:
+                dictionary_hist[word] += 1
+
+    for word in dictionary_hist:
+        if dictionary_hist[word] >= 3:
+            dictionary[word] = len(dictionary)
+    #print(max)
+    print('Final dictionary length: %d'%len(dictionary))
+    return dictionary
+
+
+def bag_of_words_with_bigrams(reviews, stopwords=None):
+    dictionary = {}
+    dictionary_hist = {}
+    # max = 0
+    for text in reviews:
+        word_list = extract_words_with_bigrams(text, stopwords)
+        # max = len(word_list) if max < len(word_list) else max
+        for word in word_list:
+            if word not in dictionary_hist:
+                dictionary_hist[word] = 1
+            else:
+                dictionary_hist[word] += 1
+
+    for word in dictionary_hist:
+        if dictionary_hist[word] >= 3:
+            dictionary[word] = len(dictionary)
+    # print(max)
+    print('Final dictionary length: %d' % len(dictionary))
+    return dictionary
 
 def extract_bow_feature_vectors(reviews, dictionary):
     """Extracts bag-of-words features from text as a feature matrix.
@@ -226,10 +296,10 @@ def extract_final_features(reviews, dictionary, stopwords):
     feature_matrix = np.zeros([len(reviews), len(dictionary) + 1])
 
     for i, text in enumerate(reviews):
-        word_list = extract_words(text, None)
+        word_list = extract_words_with_bigrams(text, None)
 
         for word in word_list:
             if word in dictionary:
-                feature_matrix[i, dictionary[word]] += 1
+                feature_matrix[i, dictionary[word]] = 1
         feature_matrix[i, -1] = len(word_list)/1271.0
     return feature_matrix

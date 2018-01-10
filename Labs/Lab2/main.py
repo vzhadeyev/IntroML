@@ -23,9 +23,12 @@ test_bow_features = lab2.extract_bow_feature_vectors(test_texts, dictionary)
 
 # You may modify the following when adding additional features (Part 3c)
 
-train_final_features = lab2.extract_final_features(train_texts, dictionary, stopwords)
-val_final_features = lab2.extract_final_features(val_texts, dictionary, stopwords)
-test_final_features = lab2.extract_final_features(test_texts, dictionary, stopwords)
+#dictionary_final = lab2.bag_of_words_final(train_texts, stopwords=None)
+dictionary_final = lab2.bag_of_words_with_bigrams(train_texts, stopwords=None)
+
+train_final_features = lab2.extract_final_features(train_texts, dictionary_final, stopwords)
+val_final_features = lab2.extract_final_features(val_texts, dictionary_final, stopwords)
+test_final_features = lab2.extract_final_features(test_texts, dictionary_final, stopwords)
 
 #-------------------------------------------------------------------------------
 # Part 1 - Perceptron Algorithm
