@@ -60,15 +60,15 @@ plt.show()
 # etas = [0.001, 0.01, 0.1, 1.0]
 # for index, eta in enumerate(etas):
 #     theta, theta_0 = lab3.pegasos(X, y, T=20, eta=eta, lam=0.01)
-#     subplot = str(math.ceil(math.sqrt(len(etas)))) * 2 + str(index + 1)
+#     subplot = int(str(int(math.ceil(math.sqrt(len(etas))))) * 2 + str(index + 1))
 #     utils.plot_linear_classifier(X, y, theta, theta_0, title='eta = {}'.format(eta), subplot=subplot)
 # plt.show()
 #
 # # Modify lambda
 # lams = [0.001, 0.01, 0.1, 1.0, 10.0]
 # for index, lam in enumerate(lams):
-#     theta, theta_0 = lab3.pegasos(X, y, T=20, eta=0.1, lam=lam)
-#     subplot = str(math.ceil(math.sqrt(len(lams)))) * 2 + str(index + 1)
+#     theta, theta_0 = lab3.pegasos(X, y, T=20, eta=0.01, lam=lam)
+#     subplot = int(str(int(math.ceil(math.sqrt(len(lams))))) * 2 + str(index + 1))
 #     utils.plot_linear_classifier(X, y, theta, theta_0, title='lambda = {}'.format(lam), subplot=subplot)
 # plt.show()
 
