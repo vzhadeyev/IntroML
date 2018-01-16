@@ -3,6 +3,7 @@ from subprocess import Popen
 from tempfile import NamedTemporaryFile
 
 from scipy.misc import imread, imshow
+from PIL import Image
 
 def sort_features(feature_names, feature_importances):
     """Sorts features by importance.
@@ -40,4 +41,5 @@ def display_decision_tree(tree, feature_names, class_names):
                         rounded=True)
         with NamedTemporaryFile(suffix='.png') as png_file:
             Popen(['dot', '-Tpng', dot_file.name, '-o', png_file.name]).wait()
-            imshow(imread(png_file.name))
+            # imshow(imread(png_file.name))
+            Image.open(png_file.name).show()
