@@ -46,10 +46,13 @@ class KernelPerceptron(BaseEstimator, ClassifierMixin):
         self.alpha = np.zeros(n)
 
         # Kernel perceptron algorithm
-        # YOUR CODE GOES HERE
-
-        # END OF YOUR CODE
-        
+        for _ in range(self.T):
+            for i in range(n):
+                sum = 0.0
+                for j in range(n):
+                    sum += self.alpha[j]*self.y_[j]*self.kernel(self.X_[j], self.X_[i])
+                if np.sign(sum) != np.array([self.y_[i]]):
+                    self.alpha[i] += 1
         return self
 
     def predict(self, X):
@@ -74,8 +77,9 @@ class KernelPerceptron(BaseEstimator, ClassifierMixin):
         predictions = np.ones(n)
 
         # Generate predictions
-        # YOUR CODE GOES HERE
-
-        # END OF YOUR CODE
-
+        for i in range(n):
+            sum = 0.0
+            for j in range(n_):
+                sum += self.alpha[j] * self.y_[j] * self.kernel(self.X_[j], X[i])
+            predictions[i] = np.sign(sum)
         return predictions
