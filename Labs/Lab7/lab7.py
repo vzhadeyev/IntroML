@@ -1,3 +1,5 @@
+# Partially based on http://www.wildml.com/2015/09/implementing-a-neural-network-from-scratch/
+
 import numpy as np
 from sklearn.metrics import accuracy_score
 
@@ -38,8 +40,12 @@ class NN:
 			self.W2 - weights connecting hidden to output layer
 			self.b2 - bias for output layer
 		"""
+		self.W1 = np.random.randn(self.n_input, self.n_hidden)
+		self.b1 = np.random.randn(self.n_hidden)
+		self.W2 = np.random.randn(self.n_hidden, self.n_output)
+		self.b2 = np.random.randn(self.n_output)
+		return
 
-		raise NotImplementedError
 
 	def softmax(self, o):
 		"""Computes the softmax function for the array o.
@@ -53,7 +59,8 @@ class NN:
 			the softmax function to o.
 		"""
 
-		raise NotImplementedError
+		#return np.exp(o) / np.sum(np.exp(o), axis=1, keepdims=True)
+		return np.exp(o) / np.sum(np.exp(o))
 
 	def feed_forward(self, x):
 		"""Runs the network on a data point and outputs probabilities.
@@ -66,8 +73,8 @@ class NN:
 			A length n_output numpy array containing the probabilities
 			of each class according to the neural network.
 		"""
-
-		raise NotImplementedError
+		return self.softmax(np.dot(self.W2.T, np.tanh(np.dot(self.W1.T, x) + self.b1)) + self.b2)
+		#return self.softmax((np.dot(np.tanh(np.dot(np.array(x), self.W1) + self.b1), self.W2) + self.b2))
 
 	def predict(self, x):
 		"""Predicts the class of a data point.
@@ -80,8 +87,8 @@ class NN:
 			A length n numpy array containing the predicted class
 			for each data point.
 		"""
-
-		raise NotImplementedError
+		return np.argmax(self.feed_forward(x))
+		#return np.argmax(self.feed_forward(x), axis=1)
 
 	def compute_accuracy(self, X, y):
 		"""Computes the accuracy of the network on data.
@@ -97,4 +104,5 @@ class NN:
 			A float with the accuracy of the neural network.
 		"""
 
-		raise NotImplementedError
+		#return np.sum([self.predict(X) == y]) / len(y)
+		return np.sum([self.predict(x) == p for x, p in zip(X, y)]) / len(y)
