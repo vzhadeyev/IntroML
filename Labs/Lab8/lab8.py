@@ -22,7 +22,11 @@ def keras_nn(n_input, n_hidden, n_output):
         A keras model with a single hidden layer for classification.
     """
 
-    raise NotImplementedError
+    model = Sequential()
+    model.add(Dense(n_hidden, activation='relu', input_dim=n_input))
+    model.add(Dense(n_output, activation='softmax'))
+
+    return model
 
 class NN:
     """A class representing a neural network with a single hidden layer for classification."""
@@ -162,8 +166,8 @@ class NN:
         Returns:
             A float with the loss of the neural network.
         """
-
-        raise NotImplementedError
+        J = -1.0 / len(X) * np.sum([(np.log(max(x))) for x, yi in zip(self.feed_forward(X), y) if np.argmax(x) == yi])
+        return J
 
 #-------------------------------------------------------------------------------
 # Part 2 - Updating Weights
@@ -186,8 +190,23 @@ class NN:
         Y[range(n),y] = 1
 
         # YOUR CODE GOES HERE
+        z = np.dot(X, self.W1) + self.b1
+        a = np.tanh(z)
+        o = np.dot(a, self.W2) + self.b2
+        P = self.softmax(o)
 
-        raise NotImplementedError
+        sigm2 = P - Y
+        Lw2 = np.dot(a.T, sigm2)
+        Lb2 = np.sum(sigm2, axis=0)
+        sigm1 = (1.0-np.square(np.tanh(a)))* np.dot(sigm2, self.W2.T)
+        Lw1 = np.dot(X.T, sigm1)
+        Lb1 = np.sum(sigm1, axis=0)
+
+        self.b2 = self.b2 - self.learning_rate*Lb2
+        self.W2 = self.W2 - self.learning_rate*Lw2
+        self.b1 = self.b1 - self.learning_rate*Lb1
+        self.W1 = self.W1 - self.learning_rate*Lw1
+        return
 
 #-------------------------------------------------------------------------------
 # Part 3 - Training
@@ -210,4 +229,9 @@ class NN:
                            every epoch.
         """
 
-        raise NotImplementedError
+        for e in range(num_epochs):
+            self.train_step(X, y)
+            if verbose:
+                print "[Epoch %d]\t Accuracy: %f\tLoss: %f" % (e, self.compute_accuracy(X, y), self.compute_loss(X, y))
+
+        return
