@@ -1,5 +1,6 @@
 # Additional datasets partially based on http://scikit-learn.org/stable/auto_examples/datasets/plot_random_dataset.html#sphx-glr-auto-examples-datasets-plot-random-dataset-py
 
+from keras.utils import to_categorical
 import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.datasets import make_blobs, make_classification, make_gaussian_quantiles, make_moons
@@ -48,11 +49,17 @@ import utils
 # Part 6 - Neural Networks with Keras
 #-------------------------------------------------------------------------------
 
+<<<<<<< HEAD
 # Modify label dimension for keras
 # n = X.shape[0]
 # y_2d = np.zeros((n, 2))
 # y_2d[range(n), y] = 1
 #
+=======
+# # Modify label dimension for keras
+# y_2d = to_categorical(y, num_classes=2)
+
+>>>>>>> 350ec79463081fd35fc48a949b5398fec436c905
 # # Build network
 # model = lab8.keras_nn(n_input=X.shape[1], n_hidden=50, n_output=2)
 # model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
@@ -82,10 +89,15 @@ import utils
 # plt.show()
 #
 # # Modify label dimension for keras
+<<<<<<< HEAD
 # n = X_cluster.shape[0]
 # y_2d_cluster = np.zeros((n, 5))
 # y_2d_cluster[range(n), y_cluster] = 1
 #
+=======
+# y_2d_cluster = to_categorical(y_cluster, num_classes=5)
+
+>>>>>>> 350ec79463081fd35fc48a949b5398fec436c905
 # # Build and train network
 # model = lab8.keras_nn(n_input=X_cluster.shape[1], n_hidden=50, n_output=5)
 # model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
@@ -110,7 +122,7 @@ import utils
 #
 # Xs = [X1, X2, X3, X4, X5, X6]
 # ys = [y1, y2, y3, y4, y5, y6]
-# n_classes = [2]*3 + [3]*3
+# num_classes = [2]*3 + [3]*3
 # titles = ['One informative feature, one cluster per class',
 #           'Two informative features, one cluster per class',
 #           'Two informative features, two clusters per class',
@@ -127,12 +139,17 @@ import utils
 # # Train network and plot decision boundaries
 # for i in range(len(Xs)):
 #     # Modify label dimension for keras
+<<<<<<< HEAD
 #     n = Xs[i].shape[0]
 #     y_2d = np.zeros((n, n_classes[i]))
 #     y_2d[range(n), ys[i]] = 1
 #
+=======
+#     y_2d = to_categorical(ys[i], num_classes[i])
+
+>>>>>>> 350ec79463081fd35fc48a949b5398fec436c905
 #     # Build and train network
-#     model = lab8.keras_nn(n_input=Xs[i].shape[1], n_hidden=50, n_output=n_classes[i])
+#     model = lab8.keras_nn(n_input=Xs[i].shape[1], n_hidden=50, n_output=num_classes[i])
 #     model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 #     model.fit(Xs[i], y_2d, epochs=100, batch_size=10)
 #
