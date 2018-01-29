@@ -1,5 +1,6 @@
 from keras.models import Sequential
 from keras.layers import Dense
+from keras import activations
 
 def build_single_layer_regression_model(n_hidden):
     """Builds a single layer regression neural network.
@@ -16,8 +17,10 @@ def build_single_layer_regression_model(n_hidden):
         A keras Sequential model with the single layer
         neural network.
     """
-
-    raise NotImplementedError
+    model = Sequential()
+    model.add(Dense(n_hidden, activation='tanh', input_dim=2))
+    model.add(Dense(1, activation='linear'))
+    return model
 
 def build_deep_regression_model(n_hidden, n_layers):
     """Builds a deep regression neural network.
@@ -36,4 +39,9 @@ def build_deep_regression_model(n_hidden, n_layers):
         A keras Sequential model with the deep neural network.
     """
 
-    raise NotImplementedError
+    model = Sequential()
+    model.add(Dense(n_hidden, activation='tanh', input_dim=2))
+    for _ in range(n_layers-1):
+        model.add(Dense(n_hidden, activation='tanh'))
+    model.add(Dense(1, activation='linear'))
+    return model

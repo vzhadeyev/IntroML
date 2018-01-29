@@ -49,17 +49,17 @@ import utils
 # Part 6 - Neural Networks with Keras
 #-------------------------------------------------------------------------------
 
-<<<<<<< HEAD
+
 # Modify label dimension for keras
 # n = X.shape[0]
 # y_2d = np.zeros((n, 2))
 # y_2d[range(n), y] = 1
 #
-=======
+
 # # Modify label dimension for keras
 # y_2d = to_categorical(y, num_classes=2)
 
->>>>>>> 350ec79463081fd35fc48a949b5398fec436c905
+
 # # Build network
 # model = lab8.keras_nn(n_input=X.shape[1], n_hidden=50, n_output=2)
 # model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
@@ -89,15 +89,15 @@ import utils
 # plt.show()
 #
 # # Modify label dimension for keras
-<<<<<<< HEAD
+
 # n = X_cluster.shape[0]
 # y_2d_cluster = np.zeros((n, 5))
 # y_2d_cluster[range(n), y_cluster] = 1
 #
-=======
+
 # y_2d_cluster = to_categorical(y_cluster, num_classes=5)
 
->>>>>>> 350ec79463081fd35fc48a949b5398fec436c905
+
 # # Build and train network
 # model = lab8.keras_nn(n_input=X_cluster.shape[1], n_hidden=50, n_output=5)
 # model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
@@ -139,15 +139,15 @@ import utils
 # # Train network and plot decision boundaries
 # for i in range(len(Xs)):
 #     # Modify label dimension for keras
-<<<<<<< HEAD
+
 #     n = Xs[i].shape[0]
 #     y_2d = np.zeros((n, n_classes[i]))
 #     y_2d[range(n), ys[i]] = 1
 #
-=======
+
 #     y_2d = to_categorical(ys[i], num_classes[i])
 
->>>>>>> 350ec79463081fd35fc48a949b5398fec436c905
+
 #     # Build and train network
 #     model = lab8.keras_nn(n_input=Xs[i].shape[1], n_hidden=50, n_output=num_classes[i])
 #     model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
