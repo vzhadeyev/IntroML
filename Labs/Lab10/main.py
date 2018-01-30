@@ -21,13 +21,13 @@ import utils
 # Part 1 - Dimensionality Reduction
 #-------------------------------------------------------------------------------
 
-# # Load 8x8 digits
+# Load 8x8 digits
 # digits = load_digits()
 # X = digits.data
 # y = digits.target
 # images = digits.images
 
-# # Plot digits
+# Plot digits
 # utils.plot_digits(X, 'A selection from the 64-dimensional (8x8) digits dataset')
 
 #-------------------------------------------------------------------------------
@@ -76,11 +76,11 @@ import utils
 # Part 2.1 - K-Means Algorithm
 #-------------------------------------------------------------------------------
 
-# # Load 8x8 digits
-# digits = load_digits()
-# X = digits.data
-# y = digits.target
-# images = digits.images
+# Load 8x8 digits
+digits = load_digits()
+X = digits.data
+y = digits.target
+images = digits.images
 
 #-------------------------------------------------------------------------------
 # Part 2.1.1 - K-Means from scratch
@@ -141,84 +141,84 @@ import utils
 #-------------------------------------------------------------------------------
 
 # n_colors = 64
-
+#
 # # Load image
 # china = load_sample_image('china.jpg')
 # china = np.array(china, dtype=np.float64) / 255
-
+#
 # width, height, depth = china.shape
 # china_array = np.reshape(china, (width * height, depth))
 # china_sample = shuffle(china_array)[:1000]
-
+#
 # # Run K-Means and predict colors
 # kmeans = KMeans(n_clusters=n_colors, random_state=42).fit(china_sample)
 # color_labels_kmeans = kmeans.predict(china_array)
 # china_array_kmeans = kmeans.cluster_centers_[color_labels_kmeans]
 # china_kmeans = np.reshape(china_array_kmeans, (width, height, depth))
-
+#
 # # Predict random colors
 # random = shuffle(china_array, random_state=42)[:n_colors]
 # color_labels_random = pairwise_distances_argmin(random, china_array, axis=0)
 # china_array_random = random[color_labels_random]
 # china_random = np.reshape(china_array_random, (width, height, depth))
-
+#
 # # Display results
 # ax_original = plt.subplot(221)
 # ax_original.imshow(china)
 # ax_original.set_title('Original image (96,615 colors)')
-
+#
 # ax_kmeans = plt.subplot(223)
 # ax_kmeans.imshow(china_kmeans)
 # ax_kmeans.set_title('Quantized image (64 colors, K-Means)')
-
+#
 # ax_random = plt.subplot(224)
 # ax_random.imshow(china_random)
 # ax_random.set_title('Quantized image (64 colors, random)')
-
+#
 # plt.show()
 
 #-------------------------------------------------------------------------------
 # Part 3 - Autoencoders
 #-------------------------------------------------------------------------------
 
-# # Load data
-# x_train, y_train, x_test, y_test = utils.load_mnist()
+# Load data
+x_train, y_train, x_test, y_test = utils.load_mnist()
 
-# # Load noisy data
-# x_train_noisy, _, x_test_noisy, _ = utils.load_mnist(noisy=True)
+# Load noisy data
+x_train_noisy, _, x_test_noisy, _ = utils.load_mnist(noisy=True)
 
 #-------------------------------------------------------------------------------
 # Part 3.1 - Image reconstruction with autoencoders
 #-------------------------------------------------------------------------------
 
-# # Parameters
-# batch_size = 256
-# epochs = 50
-# original_dim = 784
-# encoding_dim = 32
+# Parameters
+batch_size = 256
+epochs = 50
+original_dim = 784
+encoding_dim = 32
 
-# # Build autoencoder
-# autoencoder = lab10.build_autoencoder(original_dim, encoding_dim)
+# Build autoencoder
+autoencoder = lab10.build_autoencoder(original_dim, encoding_dim)
 
-# # Compile autoencoder with loss function
-# autoencoder.compile(optimizer='adadelta', loss='binary_crossentropy')
+# Compile autoencoder with loss function
+autoencoder.compile(optimizer='adadelta', loss='binary_crossentropy')
 
-# # Print autoencoder
-# autoencoder.summary()
+# Print autoencoder
+autoencoder.summary()
 
-# # Train autoencoder
-# autoencoder.fit(x_train, x_train,
-#                 epochs=epochs,
-#                 batch_size=batch_size,
-#                 shuffle=True,
-#                 validation_data=(x_test, x_test),
-#                 callbacks=[TensorBoard(log_dir='/tmp/autoencoder')])
+# Train autoencoder
+autoencoder.fit(x_train, x_train,
+                epochs=epochs,
+                batch_size=batch_size,
+                shuffle=True,
+                validation_data=(x_test, x_test),
+                callbacks=[TensorBoard(log_dir='/tmp/autoencoder')])
 
-# # Use autoencoder to reconstruct test images
-# reconstructed_imgs = autoencoder.predict(x_test)
+# Use autoencoder to reconstruct test images
+reconstructed_imgs = autoencoder.predict(x_test)
 
-# # Plot reconstructions
-# utils.plot_reconstructions(x_test, reconstructed_imgs, n=10)
+# Plot reconstructions
+utils.plot_reconstructions(x_test, reconstructed_imgs, n=10)
 
 #-------------------------------------------------------------------------------
 # Part 3.2 - Image denoising with autoencoders
