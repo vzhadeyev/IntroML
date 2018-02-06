@@ -26,8 +26,7 @@ class RandomAgent:
         Returns:
             An int indicating the action to perform.
         """
-
-        raise NotImplementedError
+        return np.random.randint(0, self.action_size)
 
 #-------------------------------------------------------------------------------
 # Part 1.2 - Engineered Agent
@@ -53,7 +52,29 @@ class EngineeredAgent:
 
         cart_position, cart_velocity, pole_angle, pole_velocity = state
 
-        raise NotImplementedError
+        if cart_position > 0.5:
+            return 0
+        if cart_position < -0.5:
+            return 1
+
+        if np.sign(cart_velocity) == np.sign(pole_velocity):
+            if pole_angle < -0.01:
+                return 0
+            if pole_angle > 0.01:
+                return 1
+
+        if cart_velocity < pole_velocity:
+            if cart_velocity < -0.01:
+                return 1
+            if cart_velocity > 0.01:
+                return 0
+
+        if pole_angle < -0.01:
+            return 0
+        if pole_angle > 0.01:
+            return 1
+
+        return np.random.randint(0, self.action_size)
 
 #-------------------------------------------------------------------------------
 # Part 1.3 - Deep Q-Network (DQN) Agent

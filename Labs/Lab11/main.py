@@ -10,18 +10,18 @@ import utils
 
 # Environment parameters
 game = 'CartPole-v1'
-episodes = 2000
+episodes = 5000
 render_frequency = 100
 
 # DQN agent parameters
 memory_max = 2000
 gamma = 0.95
 epsilon_init = 1.0
-epsilon_decay = 1 - (5 / episodes)
+epsilon_decay = 1 - (5.0 / episodes)
 epsilon_min = 0.01
 hidden_size = 50
-num_layers = 3
-batch_size = 32
+num_layers = 2
+batch_size = 64
 
 # Initialize game environment
 env = gym.make(game)
@@ -34,7 +34,7 @@ action_size = env.action_space.n
 
 # # Initialize random agent
 # agent = lab11.RandomAgent(state_size, action_size)
-
+#
 # # Render agent playing game
 # utils.render_agent(env, agent, gif_path='random.gif')
 
@@ -44,7 +44,7 @@ action_size = env.action_space.n
 
 # # Initialize the engineered agent
 # agent = lab11.EngineeredAgent(state_size, action_size)
-
+#
 # # Render agent playing game
 # utils.render_agent(env, agent, gif_path='engineered.gif')
 
@@ -52,20 +52,20 @@ action_size = env.action_space.n
 # Part 1.3 - Deep Q-Network (DQN) Agent
 #-------------------------------------------------------------------------------
 
-# # Initialize DQN agent
-# agent = lab11.DQNAgent(state_size,
-#                        action_size,
-#                        memory_max,
-#                        gamma,
-#                        epsilon_init,
-#                        epsilon_decay,
-#                        epsilon_min,
-#                        hidden_size,
-#                        num_layers,
-#                        batch_size)
+# Initialize DQN agent
+agent = lab11.DQNAgent(state_size,
+                       action_size,
+                       memory_max,
+                       gamma,
+                       epsilon_init,
+                       epsilon_decay,
+                       epsilon_min,
+                       hidden_size,
+                       num_layers,
+                       batch_size)
 
-# # Train DQN agent
-# agent.train(env, episodes, render_frequency)
+# Train DQN agent
+agent.train(env, episodes, render_frequency)
 
-# # Render final agent playing game
-# utils.render_agent(env, agent, gif_path='dqn.gif')
+# Render final agent playing game
+utils.render_agent(env, agent, gif_path='dqn.gif')
